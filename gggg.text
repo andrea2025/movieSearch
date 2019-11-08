@@ -1,0 +1,43 @@
+<template>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <template>
+  <div id="app">
+    <input type="text" v-model="newName" />
+
+    <button @click="add">Add</button>
+    <div>
+      <p v-for="item in items" :key="list" v-html="item.name"></p>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: "memories",
+  data() {
+    return {
+      items: [{ name: " " }],
+      newName: " "
+    };
+  },
+
+  methods: {
+    add() {
+      return this.items.push({ name: this.newName });
+    }
+  }
+};
+</script>
+<style scoped>
+*{
+    color:brown;
+    font-size: 20px;
+}
+button{
+    background: yellowgreen;
+    padding:10px 20px;
+    border-radius:20px;
+    border:none;
+    margin-left: 2rem;
+}
+input{
+    padding: 10px;
+}
+</style>
