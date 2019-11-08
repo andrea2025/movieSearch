@@ -1,8 +1,10 @@
 <template>
     <div>
+        <p ref="dom-element">{{text1}}</p>
        <div> <input type="search" placeholder="search movie" v-model="search" >
        <button @click="filerImage">search</button>
        </div>
+       <p v-for="(item,index) in imageTotal" :key="index">{{imge.Name}} </p>
         <div class="imageWrapper">
             <div v-for='(imge,index) in imageGroup' :key="index">
                 
@@ -21,9 +23,18 @@
 <script>
 export default {
     name:'movieSearch',
+     updated() {
+    // Fired every second, should always be true
+    return(+this.$refs['dom-element'].textContent === this.counter)
+  },
+
+  created() {
+    setInterval(() => {
+      this.counter += 5
+    }, 5000)
+  },
     data(){
         return{
-            search:'',
 
             imageGroup:[
   {
@@ -126,39 +137,31 @@ export default {
     Type: "music",
     Url: "http://static.tvmaze.com/uploads/images/original_untouched/60/152357.jpg"
   }
-]
+],
+            search:'',
+            searched:false,
+            imageTotal:[],
+            counter:0,
+            text1:"loading...."
         }
         
     },
     methods: {
             del(index) {
              this.imageGroup.splice(index, 1)
-         }
+         },
+          filerImage(){
+            this.imageTotal= this.imageGroup.filter(imge => {return imge.Name === this.search});
+            this.searched = true;
+
+        }
     },
 
     computed:{
-        // filerImage(){
-        //     return this.imageGroup.filter(imge => {
-        //         return imge.Name.match(this.search.toLowerCase());
-        //     });
-
-        // }
-
-        filerImage: function () {
-    if (!this.search) {
-      return this.imageGroup
-    }
-
-    return this.imageGroup.filter((imge) => {
-      if (imge.Name.includes(this.search)) {
-        return true;
-      }else{
-          return ("no result found")
-      }
-      },
-
-    )
-        },
+        imageGroup(){
+           if (this.searched) {
+          return this.imageTotal;
+        }else return this.imageGroup
     }
 
     }
@@ -181,7 +184,5 @@ button{
     background: chocolate;
     color: white;
     margin:2em;
-    
-
 }
 </style>
